@@ -1,11 +1,59 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<module type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" inherit-compiler-output="true">
-    <exclude-output />
-    <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-    </content>
-    <orderEntry type="inheritedJdk" />
-    <orderEntry type="sourceFolder" forTests="false" />
-  </component>
-</module>
+import java.util.Random;
+import java.util.Scanner;
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Random rnd = new Random();
+        boolean playAgain = true;
+
+        while (playAgain) {
+            int die1 = rnd.nextInt(6) + 1;
+            int die2 = rnd.nextInt(6) + 1;
+            int sum = die1 + die2;
+
+            System.out.println("First roll:");
+            System.out.println("Die 1: " + die1 + ", Die 2: " + die2 + ", You rolled a " + sum);
+
+            if (sum == 2 || sum == 3 || sum == 12) {
+                System.out.println("You lost.");
+                playAgain = promptPlayAgain(scanner);}
+            else if (sum == 7 || sum == 11) {
+                System.out.println("You win.");
+                playAgain = promptPlayAgain(scanner);}
+            else {
+                int point = sum;
+
+                System.out.println("Point is: " + point);
+                System.out.println("Trying for point " + point);
+
+                boolean pointMade = false;
+                boolean lost = false;
+
+                while (!pointMade && !lost) {
+                    die1 = rnd.nextInt(6) + 1;
+                    die2 = rnd.nextInt(6) + 1;
+                    sum = die1 + die2;
+
+                    System.out.println("Die 1: " + die1 + ", Die 2: " + die2 + ", You rolled a " + sum);
+
+                    if (sum == point) {
+                        System.out.println("You won.");
+                        pointMade = true;
+                        playAgain = promptPlayAgain(scanner);}
+                    else if (sum == 7) {
+                        System.out.println("You lost.");
+                        lost = true;
+                        playAgain = promptPlayAgain(scanner);}
+                    else {
+                        System.out.println("Trying for point " + point);}
+                }
+            }
+            System.out.println();}
+        scanner.close();}
+    private static boolean promptPlayAgain(Scanner scanner) {
+        System.out.print("Do you want to play again? (y/n)");
+        String response = scanner.nextLine().trim().toLowerCase();
+        while (!response.equals("y") && !response.equals("n")) {
+            System.out.print("Enter 'y' for yes or 'n' for no");
+            response = scanner.nextLine().trim().toLowerCase();}
+        return response.equals("y");}
